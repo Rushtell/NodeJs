@@ -1,6 +1,6 @@
 import {
     createAddressByCustomer,
-    deleteAddressByCustomer,
+    deleteAddressByCustomer, getAddressByCustomerId,
     getAddressesByCustomerId,
     updateAddressByCustomer
 } from "../services/address.service";
@@ -15,6 +15,14 @@ export function createAddress (req, res, next) {
 export function getAddresses (req, res, next) {
     const {customerId} = req.params;
     return getAddressesByCustomerId(customerId).then(result => {
+        res.json(result);
+    }).catch(next);
+}
+
+export function getAddress (req, res, next) {
+    const {customerId} = req.params;
+    const {addressId} = req.params;
+    return getAddressByCustomerId(customerId, addressId).then(result => {
         res.json(result);
     }).catch(next);
 }

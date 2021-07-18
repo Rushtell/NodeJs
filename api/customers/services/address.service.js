@@ -10,7 +10,15 @@ export function createAddressByCustomer(id, body) {
 }
 
 export function getAddressesByCustomerId (id) {
-    return Customer.find({_id: id}).select("Addresses");
+    return Customer.find({_id: id}).select("Addresses").then(result => {
+        return result[0].Addresses
+    });
+}
+
+export function getAddressByCustomerId (customerId, addressId) {
+    return Customer.find({_id: customerId}).select('Addresses').then(result => {
+        return result[0].Addresses.find(e => e._id == addressId)
+    })
 }
 
 export function updateAddressByCustomer(idCustomer, idAddress, body) {

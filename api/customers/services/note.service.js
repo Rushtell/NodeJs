@@ -10,7 +10,15 @@ export function createNoteByCustomer(id, body) {
 }
 
 export function getNotesByCustomerId (id) {
-    return Customer.find({_id: id}).select("Notes");
+    return Customer.find({_id: id}).select("Notes").then(result => {
+        return result[0].Notes
+    })
+}
+
+export function getNoteByCustomerId (customerId, noteId) {
+    return Customer.find({_id: customerId}).select('Notes').then(result => {
+        return result[0].Notes.find(e => e._id == noteId)
+    })
 }
 
 export function updateNoteByCustomer(idCustomer, idNote, body) {

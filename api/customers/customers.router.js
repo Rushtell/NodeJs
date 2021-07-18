@@ -8,13 +8,13 @@ import {
 } from "./controllers/customer.controller";
 import {
     createAddress,
-    deleteAddress,
+    deleteAddress, getAddress,
     getAddresses,
     updateAddress
 } from "./controllers/address.controller";
 import {
     createNote,
-    deleteNote,
+    deleteNote, getNote,
     getNotes,
     updateNote
 } from "./controllers/note.controller";
@@ -30,12 +30,14 @@ router.delete('/:customerId', deleteCustomer);
 
 // Addresses req
 router.get('/:customerId/addresses', getAddresses);
+router.get('/:customerId/addresses/:addressId', getAddress);
 router.post('/:customerId/addresses', createAddress);
 router.put('/:customerId/addresses/:addressId', updateAddress);
 router.delete('/:customerId/addresses/:addressId', deleteAddress);
 
 // Notes req
 router.get('/:customerId/notes', getNotes);
+router.get('/:customerId/notes/:noteId', getNote);
 router.post('/:customerId/notes', createNote);
 router.put('/:customerId/notes/:noteId', updateNote);
 router.delete('/:customerId/notes/:noteId', deleteNote);

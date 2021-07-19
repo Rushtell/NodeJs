@@ -10,14 +10,14 @@ export function createNoteByCustomer(id, body) {
 }
 
 export function getNotesByCustomerId (id) {
-    return Customer.find({_id: id}).select("Notes").then(result => {
-        return result[0].Notes
+    return Customer.findOne({_id: id}).select("Notes").then(result => {
+        return result.Notes
     })
 }
 
 export function getNoteByCustomerId (customerId, noteId) {
-    return Customer.find({_id: customerId}).select('Notes').then(result => {
-        return result[0].Notes.find(e => e._id == noteId)
+    return Customer.findOne({_id: customerId}).select('Notes').then(result => {
+        return result.Notes.find(e => e._id == noteId)
     })
 }
 

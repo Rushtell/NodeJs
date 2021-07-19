@@ -20,6 +20,24 @@ describe('Tests error handler', () => {
         const next = jest.fn();
         errorHandler(error, req, res, next)
     })
+    test('Should return status 404 without message', () => {
+        const error = new NotFoundError();
+        const req = {
+            query: {}
+        };
+        const res = {
+            status: jest.fn(() => {
+                return {
+                    json: jest.fn(() => {
+                        return Promise.resolve()
+                    })
+                }
+            }),
+
+        };
+        const next = jest.fn();
+        errorHandler(error, req, res, next)
+    })
     test('Should return status 400', () => {
         const error = {
             name: 'ValidationError'
@@ -59,5 +77,15 @@ describe('Tests error handler', () => {
         };
         const next = jest.fn();
         errorHandler(error, req, res, next)
+    })
+    test('Should return next method without errors', () => {
+        const req = {
+            query: {}
+        };
+        const res = {
+            status: jest.fn()
+        }
+        const next = jest.fn();
+        errorHandler(undefined ,req, res, next)
     })
 })

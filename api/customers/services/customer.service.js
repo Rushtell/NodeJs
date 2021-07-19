@@ -9,10 +9,9 @@ export function getCustomerFromDb (id) {
 }
 
 export function insertCustomerIntoDb (body) {
-
-    const newCustomer = new Customer (body);
-
-    return newCustomer.save()
+    // const newCustomer = new Customer (body);
+    // return newCustomer.save()
+    return Customer.create(body);
 }
 
 export function deleteCustomerFromDb (id) {

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose')
 
 export function connectToDb () {
     return mongoose.connect('mongodb://localhost:27017/TestDb', {

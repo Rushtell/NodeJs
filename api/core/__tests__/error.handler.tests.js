@@ -19,6 +19,7 @@ describe('Tests error handler', () => {
         };
         const next = jest.fn();
         errorHandler(error, req, res, next)
+        expect(res.status).toBeCalledTimes(1)
     })
     test('Should return status 404 without message', () => {
         const error = new NotFoundError();
@@ -37,8 +38,9 @@ describe('Tests error handler', () => {
         };
         const next = jest.fn();
         errorHandler(error, req, res, next)
+        expect(res.status).toBeCalledTimes(1)
     })
-    test('Should return status 400', () => {
+    test('Should return status 400', async () => {
         const error = {
             name: 'ValidationError'
         }
@@ -48,15 +50,14 @@ describe('Tests error handler', () => {
         const res = {
             status: jest.fn(() => {
                 return {
-                    json: jest.fn((value) => {
-                        return Promise.resolve({message: value})
-                    })
+                    json: jest.fn()
                 }
             }),
-
         };
+
         const next = jest.fn();
-        errorHandler(error, req, res, next)
+        await errorHandler(error, req, res, next)
+        expect(res.status).toBeCalledTimes(1)
     })
     test('Should return status 500', () => {
         const error = {
@@ -77,6 +78,7 @@ describe('Tests error handler', () => {
         };
         const next = jest.fn();
         errorHandler(error, req, res, next)
+        expect(res.status).toBeCalledTimes(1)
     })
     test('Should return next method without errors', () => {
         const req = {
@@ -87,5 +89,6 @@ describe('Tests error handler', () => {
         }
         const next = jest.fn();
         errorHandler(undefined ,req, res, next)
+        expect(next).toBeCalledTimes(1)
     })
 })

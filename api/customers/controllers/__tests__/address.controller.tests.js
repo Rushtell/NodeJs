@@ -2,38 +2,40 @@ import {createAddress, deleteAddress, getAddress, getAddresses, updateAddress} f
 
 jest.mock('../../services/address.service', () => {
     return {
-        getAddressesByCustomerId: jest.fn((params) => {
+        getAddressesByCustomerId: jest.fn((id) => {
+            return Promise.resolve({id})
+        }),
+        createAddressByCustomer: jest.fn((...params) => {
             return Promise.resolve(params)
         }),
-        createAddressByCustomer: jest.fn((params) => {
+        getAddressByCustomerId: jest.fn((...params) => {
             return Promise.resolve(params)
         }),
-        getAddressByCustomerId: jest.fn((params) => {
+        updateAddressByCustomer: jest.fn((...params) => {
             return Promise.resolve(params)
         }),
-        updateAddressByCustomer: jest.fn((params) => {
-            return Promise.resolve(params)
-        }),
-        deleteAddressByCustomer: jest.fn((params) => {
+        deleteAddressByCustomer: jest.fn((...params) => {
             return Promise.resolve(params)
         })
     }
 })
 
 describe('Test address controller', () => {
-    test('Test createAddress method', () => {
+    test('Test createAddress method', async () => {
         const req = {
             query: {},
+            body: {name: '321'},
             params: {customerId: '123'}
         };
         const res = {
             json: jest.fn()
         };
         const next = jest.fn();
-        const result = createAddress(req, res , next)
-        expect(result).toMatchSnapshot('createResult')
+        await createAddress(req, res, next)
+        expect(res.json).toBeCalledWith(['123', {name: '321'}])
+        //expect(result).toMatchSnapshot('createResult')
     })
-    test('Test getAddresses method', () => {
+    test('Test getAddresses method', async () => {
         const req = {
             query: {},
             params: {customerId: '123'}
@@ -42,43 +44,44 @@ describe('Test address controller', () => {
             json: jest.fn()
         };
         const next = jest.fn();
-        const result = getAddresses(req, res , next)
-        expect(result).toMatchSnapshot('getAllResult')
+        await getAddresses(req, res, next)
+        expect(res.json).toBeCalledWith({'id': '123'})
     })
-    test('Test getAddress method', () => {
+    test('Test getAddress method', async () => {
         const req = {
             query: {},
-            params: {customerId: '123'}
+            params: {customerId: '123', addressId: '321'}
         };
         const res = {
             json: jest.fn()
         };
         const next = jest.fn();
-        const result = getAddress(req, res , next)
-        expect(result).toMatchSnapshot('getOneResult')
+        await getAddress(req, res, next)
+        expect(res.json).toBeCalledWith(['123', '321'])
     })
-    test('Test updateAddress method', () => {
+    test('Test updateAddress method', async () => {
         const req = {
             query: {},
-            params: {customerId: '123'}
+            params: {customerId: '123', addressId: '321'},
+            body: {name: 'test'}
         };
         const res = {
             json: jest.fn()
         };
         const next = jest.fn();
-        const result = updateAddress(req, res , next)
-        expect(result).toMatchSnapshot('updateResult')
+        await updateAddress(req, res, next)
+        expect(res.json).toBeCalledWith(['123', '321', {name: 'test'}])
     })
-    test('Test deleteAddress method', () => {
+    test('Test deleteAddress method', async () => {
         const req = {
             query: {},
-            params: {customerId: '123'}
+            params: {customerId: '123', addressId: '321'},
         };
         const res = {
             json: jest.fn()
         };
         const next = jest.fn();
-        const result = deleteAddress(req, res , next)
-        expect(result).toMatchSnapshot('deleteResult')
+        await deleteAddress(req, res, next)
+        expect(res.json).toBeCalledWith(['123', '321'])
     })
 })

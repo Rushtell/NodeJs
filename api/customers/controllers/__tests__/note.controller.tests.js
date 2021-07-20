@@ -2,38 +2,39 @@ import {createNote, deleteNote, getNote, getNotes, updateNote} from "../note.con
 
 jest.mock('../../services/note.service', () => {
     return {
-        createNoteByCustomer: jest.fn((params) => {
+        createNoteByCustomer: jest.fn((...params) => {
             return Promise.resolve(params)
         }),
-        getNotesByCustomerId: jest.fn((params) => {
+        getNotesByCustomerId: jest.fn((...params) => {
             return Promise.resolve(params)
         }),
-        getNoteByCustomerId: jest.fn((params) => {
+        getNoteByCustomerId: jest.fn((...params) => {
             return Promise.resolve(params)
         }),
-        updateNoteByCustomer: jest.fn((params) => {
+        updateNoteByCustomer: jest.fn((...params) => {
             return Promise.resolve(params)
         }),
-        deleteNoteByCustomer: jest.fn((params) => {
+        deleteNoteByCustomer: jest.fn((...params) => {
             return Promise.resolve(params)
         })
     }
 })
 
 describe('Test note controller', () => {
-    test('Test createNote method', () => {
+    test('Test createNote method', async () => {
         const req = {
             query: {},
-            params: {customerId: '123'}
+            params: {customerId: '123'},
+            body: {name: 'test'}
         };
         const res = {
             json: jest.fn()
         };
         const next = jest.fn();
-        const result = createNote(req, res , next)
-        expect(result).toMatchSnapshot('createResult')
+        await createNote(req, res, next)
+        expect(res.json).toBeCalledWith(['123', {name: 'test'}])
     })
-    test('Test getNotes method', () => {
+    test('Test getNotes method', async () => {
         const req = {
             query: {},
             params: {customerId: '123'}
@@ -42,43 +43,44 @@ describe('Test note controller', () => {
             json: jest.fn()
         };
         const next = jest.fn();
-        const result = getNotes(req, res , next)
-        expect(result).toMatchSnapshot('getAllResult')
+        await getNotes(req, res, next)
+        expect(res.json).toBeCalledWith(['123'])
     })
-    test('Test getNote method', () => {
+    test('Test getNote method', async () => {
         const req = {
             query: {},
-            params: {customerId: '123'}
+            params: {customerId: '123', noteId: '321'}
         };
         const res = {
             json: jest.fn()
         };
         const next = jest.fn();
-        const result = getNote(req, res , next)
-        expect(result).toMatchSnapshot('getOneResult')
+        await getNote(req, res, next)
+        expect(res.json).toBeCalledWith(['123', '321'])
     })
-    test('Test updateNote method', () => {
+    test('Test updateNote method', async () => {
         const req = {
             query: {},
-            params: {customerId: '123'}
+            params: {customerId: '123', noteId: '321'},
+            body: {name: 'test'}
         };
         const res = {
             json: jest.fn()
         };
         const next = jest.fn();
-        const result = updateNote(req, res , next)
-        expect(result).toMatchSnapshot('updateResult')
+        await updateNote(req, res, next)
+        expect(res.json).toBeCalledWith(['123', '321', {name: 'test'}])
     })
-    test('Test deleteNote method', () => {
+    test('Test deleteNote method', async () => {
         const req = {
             query: {},
-            params: {customerId: '123'}
+            params: {customerId: '123', noteId: '321'},
         };
         const res = {
             json: jest.fn()
         };
         const next = jest.fn();
-        const result = deleteNote(req, res , next)
-        expect(result).toMatchSnapshot('deleteResult')
+        await deleteNote(req, res, next)
+        expect(res.json).toBeCalledWith(['123', '321'])
     })
 })

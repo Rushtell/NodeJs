@@ -47,7 +47,7 @@ describe('Test customer service', () => {
     })
     test('Test method updateCustomerIntoDb', async () => {
         mockingoose(Customer).toReturn((query) => {
-            expect(query.getQuery()).toMatchSnapshot('findById query')
+            expect(query.getQuery()).toStrictEqual({_id: '123'})
             return {updated: 1}
         }, 'updateOne')
 

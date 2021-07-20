@@ -53,7 +53,7 @@ describe('Test note service', () => {
     })
     test('Test method updateNoteByCustomer', async () => {
         mockingoose(Customer).toReturn((query) => {
-            expect(query.getQuery()).toMatchSnapshot('findById query')
+            expect(query.getQuery()).toStrictEqual({"_id": '123', "Notes._id": '321'})
             return {updated: 1}
         }, 'updateOne')
 
@@ -62,7 +62,7 @@ describe('Test note service', () => {
     })
     test('Test method deleteNoteByCustomer', async () => {
         mockingoose(Customer).toReturn((query) => {
-            expect(query.getQuery()).toMatchSnapshot('findById query')
+            expect(query.getQuery()).toStrictEqual({_id: '123'})
             return {updated: 1}
         }, 'updateOne')
 
